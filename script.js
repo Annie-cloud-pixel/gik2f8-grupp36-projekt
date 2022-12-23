@@ -1,3 +1,7 @@
+"use strict";
+
+const api = new Api('http://localhost:5000/tasks');
+
 /* För att den ska känna av knapptryckningarna som görs i input-fälten */
 shoppingLista.produkt.addEventListener('keyup', (e) => verifiedField(e.target));
 shoppingLista.produkt.addEventListener('blur', (e) => verifiedField(e.target));
@@ -17,14 +21,14 @@ let produktVerified = true;
 let antalVerified = true;
 let prisVerified = true;
 
-const api = new Api('http://localhost:5000/tasks');
+
 
 /* funktion som tar emot inputen */
 function verifiedField(field) {
     const { name, value } = field;
   
     /* Sätter en variabel som framöver ska hålla ett valideringsmeddelande */
-    let = validationMessage = '';
+    let validationMessage = '';
     /* En switchsats används för att kolla name, som kommer att vara title om någon skrivit i eller lämnat titlefältet, annars
      description eller date.   */
     switch (name) {
