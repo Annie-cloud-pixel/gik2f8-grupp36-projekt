@@ -98,6 +98,7 @@ app.delete('/tasks/:id', async (req, res) => {
   }
 });
 
+/* PATCH för att kunna uppdatera innehåll */
 app.patch("/tasks/:id", async (req, res) => {
   try {
     const id = req.params.id;

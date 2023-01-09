@@ -27,4 +27,29 @@ class Api {
         .then((result) => result.json())
         .then((data) => data)
         .catch((err) => console.log(err));
-    }}
+    }
+  
+    remove(id) {
+      return fetch(`${this.url}/${id}`, {
+        method: "DELETE",
+      })
+        .then((result) => result)
+        .catch((err) => console.log(err));
+    }
+  
+    patch(id, completed) {
+      const JSONData = JSON.stringify(completed);
+      const request = new Request(`${this.url}/${id}`, {
+        method: "PATCH",
+        body: JSONData,
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+  
+      return fetch(request)
+        .then((result) => console.log(result))
+        .then((data) => data)
+        .catch((err) => console.log(err));
+    }
+  }

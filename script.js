@@ -87,7 +87,7 @@ function onSubmit(e) {
   
       saveTask();
     }
-  }
+  }  
   
   function saveTask() {
     const task = {
@@ -105,46 +105,93 @@ function onSubmit(e) {
   }
   
   function renderList() {
-    console.log('rendering');
-  
     api.getAll().then((tasks) => {
-
-      todoListElement.innerHTML = '';  
-      if (tasks && tasks.length > 0) {
-        tasks.forEach((task) => {
-        
-          todoListElement.insertAdjacentHTML('beforeend', renderTask(task));
-        });
-      }
+      tasks.sort((a, b) => {
+        const taskA = new Task(a.produkt);
+        const taskB = new Task(b.produkt);
+  
+        if (taskA < taskB) return -1;
+        if (taskA > taskB) return 1;
+        return 0;
+      });
+      todoListElement.innerHTML = "";
+      tasks.forEach((task) => {
+        if (tasks && tasks.length > 0) {
+          todoListElement.insertAdjacentHTML(
+            "beforeend",
+            renderTask(task, tasks)
+          );
+  
+          const checkboxes = document.querySelectorAll(".checkbox");
+          checkboxes.forEach(editTasks);
+        }
+      });
     });
   }
   
   
-  function renderTask({ id, title, description, dueDate }) {
-    let html = `
-      <li class="select-none mt-2 py-2 border-b border-indigo-300">
+  function renderTask({ id, title, description, dueDate, completed }, tasks) {
+    console.log(tasks);
+    
+      let html = `
+      <li  class="select-none mt-2 py-2 border-b border-purple-300">
         <div class="flex items-center">
-          <input type="checkbox" onclick="changeDesign()">
-          <h3 class="mb-3 flex-1 text-xl font-bold text-cyan-700 uppercase">${title}</h3>
+          <h3 class="mb-3 flex-1 text-xl font-bold text-pink-800 uppercase">`;
+      if (completed) {
+        html += `<s>`;
+      }
+    
+      html += ` ${title}`;
+      if (completed) {
+        html += `</s>`;
+      }
+      html += `
+       </h3>
           <div>
+          
             <span>${dueDate}</span>
-            <button onclick="deleteTask(${id})" class="inline-block bg-yellow-400 text-xs border border-white px-3 py-1 rounded-md ml-2">Ta bort</button>
+            <input type="checkbox" id="${id}" class="checkbox inline-block m-2 bg-white"
+            ${completed ? "checked" : ""} 
+          />
+            <button onclick="deleteTask(${id})" onclick="deleteTask(${id})" class="inline-block bg-purple-500 text-xs text-purple-900 border border-white px-3 py-1 rounded-md ml-2">Ta bort</button>
           </div>
         </div>`;
-  
-  
-    description &&
+      description &&
         (html += `
         <p class="ml-8 mt-2 text-xs italic">${description}</p>
     `);
-  
-    html += `
+      html += `
       </li>`;
-    return html;
-  }
-  
-  function deleteTask(id) {
-    api.remove(id).then((result) => {
-      renderList();
-    });
-  }
+    
+      return html;
+    }
+    
+    function editTasks(checkbox) {
+      checkbox.addEventListener("change", (e) => {
+        if (checkbox.checked) {
+          const completed = {
+            completed: true,
+          };
+          api.patch(checkbox.id, completed).then((result) => {
+            console.log(result);
+            renderList();
+          });
+        } else {
+          const completed = {
+            completed: false,
+          };
+          api.patch(checkbox.id, completed).then((result) => {
+            console.log(result);
+            renderList();
+          });
+        }
+      });
+    }
+    
+    function deleteTask(id) {
+      api.remove(id).then((result) => {
+        renderList();
+      });
+    }
+    
+    renderList();
