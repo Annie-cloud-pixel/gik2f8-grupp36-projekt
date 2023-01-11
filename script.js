@@ -86,6 +86,9 @@ function verifiedField(field) {
     });
   }
   
+  /* För att visa så har vi då funktionen renderList som alltså hämtar api:t där uppgifterna sparas och konverterar dom till html. 
+  Om uppgiften och längden på uppgiften är större än 0 kommer då listan att loopas och sedan med hjälp av insertAdjecentHTML läggas in *beforeEnd’ som är… 
+  och sedan kallar man på renderTask som skapar upp denna uppgift i HTML och läggs till på sidan. */
   function renderList() {
     console.log('rendering');
   
@@ -100,6 +103,10 @@ function verifiedField(field) {
     });
   }
 
+  /* Denhär funktionen gör så att listan visas dynamiskt. Denhär funktionen kallas sedan i andra funktioner så som renderList */
+  /* Man genererar HTML dynamiskt genom att skriva HTML-koden i javascript. Det man gör är att man skapar upp en funktion som man skriver HTML-koden i en template string 
+  som man lägger i en variabel som man sedan returnerar. Denhär funktionen kallar man sedan på i andra funktioner beroende på vad man vill ska hända. Till exempel lägga till en ny uppgift 
+  eller ta bort en uppgift. */
   function renderTask({ id, produkt, antal, pris }) {
   
     let html = `
@@ -113,7 +120,8 @@ function verifiedField(field) {
 
     return html;
   }
-  
+
+  /* Funktionen deleteTask hämtar api:t och raderar uppgift med hjälp av id för att sedan hämta resultatet och kallar på funktionen renderList som sedan skriver ut den nya listan. */
   function deleteTask(id) {
     api.remove(id).then((result) => {
       renderList();
