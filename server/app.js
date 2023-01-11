@@ -16,7 +16,7 @@ app
     next();
   });
 
-
+/*http-metoder och callbackfunktioner - get, post och delete*/
 app.get('/tasks', async (req, res) => {
   try {
     const tasks = await fs.readFile('./tasks.json');
