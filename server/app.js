@@ -16,7 +16,10 @@ app
     next();
   });
 
-/*Http-metoder och callbackfunktioner - get, post och delete*/
+/* http-metoder och callbackfunktioner - get, post och delete */
+
+
+/* GET = read */
 app.get('/tasks', async (req, res) => {
   try {
     const tasks = await fs.readFile('./tasks.json');
@@ -25,6 +28,9 @@ app.get('/tasks', async (req, res) => {
     res.status(500).send({ error });
   }
 });
+
+
+/* POST = CREATE */
 app.post('/tasks', async (req, res) => {
   try {
     const task = req.body;
@@ -49,6 +55,8 @@ app.post('/tasks', async (req, res) => {
   }
 });
 
+
+/* DELETE = DELETE */ 
 app.delete('/tasks/:id', async (req, res) => {
   console.log(req);
   try {
