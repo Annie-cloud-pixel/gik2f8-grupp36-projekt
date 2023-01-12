@@ -119,5 +119,6 @@ function verifiedField(field) {
       renderList();
     });
   }
+  
   renderList();
   
